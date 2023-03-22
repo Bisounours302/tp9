@@ -13,16 +13,19 @@ int  retirer(T_File *ptrF,T_Elt *ptrE) //si pas vide, en tete de file
         printf("\nPile vide");
         return 0;
     }
-    if (ptrF->Queue == 0){
-        ptrF->Queue = MAX - 1;
-        ptrE = ptrF->Elts[0];
-        return 1;
+    if (ptrF->Queue == ptrF->Tete){
+        affecterElt(ptrE, &(ptrF->Elts[ptrF->Queue]));
+        initFile(ptrF);
+    }
+    else if (ptrF->Tete == MAX - 1){
+        ptrF->Tete = 0;
+        affecterElt(ptrE, &(ptrF->Elts[MAX - 1]));
     }
     else{
-        ptrF->Queue = ptrF->Queue - 1;
-        ptrE = ptrF->Elts[ptrF->Queue];
-        return 1;
+        ptrF->Tete = ptrF->Tete + 1;
+        affecterElt(ptrE, &(ptrF->Elts[ptrF->Tete - 1]));
     }
+    return 1;
 }
 
 int ajouter(T_File *ptrF,T_Elt *ptrE) // si espace libre, ajout en queue
@@ -31,19 +34,25 @@ int ajouter(T_File *ptrF,T_Elt *ptrE) // si espace libre, ajout en queue
         printf("\nPile pleine");
         return 0;
     }
-    if (ptrF->Queue == MAX - 1){
+    if (fileVide(ptrF)){
+        ptrF->Tete = 0;
         ptrF->Queue = 0;
-        ptrF->Elts[ptrF->Queue] = ptrE;
-        return 1;
+        affecterElt(&(ptrF->Elts[ptrF->Queue]), ptrE);
     }
-    ptrF->Queue = ptrF->Queue + 1;
-    ptrF->Elts[ptrF->Queue] = ptrE;
+    else if (ptrF->Queue == MAX - 1){
+        affecterElt(&(ptrF->Queue), 0);
+        affecterElt(&(ptrF->Elts[ptrF->Queue]), ptrE);
+    }
+    else{
+        ptrF->Queue = ptrF->Queue + 1;
+        affecterElt(&(ptrF->Elts[ptrF->Queue]), ptrE);
+    }
     return 1;
 } 
 
-int fileVide(const  T_File *prtF) // qd Tete == 0 
+int fileVide(const  T_File *ptrF) // qd Tete == 0 
 {
-    return (prtF->Tete == 0);
+    return (ptrF->Queue == -1 && ptrF->Tete == -1);
 }
 
 int filePleine(const  T_File *ptrF) // qd MAX elts dans la file 
@@ -72,14 +81,16 @@ void afficherFile(T_File *ptrF)
     else if (queue > tete){
         int longueur = queue - tete + 1;
         for (int i = 0; i < longueur; i++)
-            printf("\nF[%d] = %d", i, ptrF->Elts[i]);
+            afficherElt(&(ptrF->Elts[i]));
     }
-    else if (queue > tete){
-        int longueur = MAX - tete + queue + 1;
+    else if (queue < tete){
         for (int i = tete; i < MAX; i++)
-            printf("\nF[%d] = %d", i, ptrF->Elts[i]);
+            afficherElt(&(ptrF->Elts[i]));
         for (int i = 0; i < queue; i++)
-            printf("\nF[%d] = %d", i, ptrF->Elts[i]);
+            afficherElt(&(ptrF->Elts[i]));
+    }
+    else {
+        afficherElt(&(ptrF->Elts[queue]));
     }
     printf("\n");
 }

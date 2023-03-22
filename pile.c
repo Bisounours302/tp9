@@ -4,7 +4,7 @@
 
 void initPile( T_Pile * P)
 {
-    P->nbElts = 0;
+    affecterElt(&P->nbElts, 0);
 
 }
 
@@ -27,7 +27,7 @@ int empiler( T_Pile *P, T_Elt e) //renvoie 0 si pile pleine, sinon 1
 {
     if (pilepleine(P))
         return 0;
-    P->Elts[P->nbElts] = e;
+    affecterElt(&(P->Elts[P->nbElts]) , &e);
     P->nbElts = P->nbElts + 1;
     return 1;
 }
@@ -37,9 +37,9 @@ int empiler( T_Pile *P, T_Elt e) //renvoie 0 si pile pleine, sinon 1
 int depiler( T_Pile *P, T_Elt *pelt)  //renvoie 0 si pile vide, sinon 1
 {
     if (pilevide(P))
-            return 0;
+        return 0;
     P->nbElts = P->nbElts - 1;
-    pelt = P->Elts[P->nbElts];       
+    affecterElt(pelt ,&(P->Elts[P->nbElts]));       
     return 1;
 }
 
@@ -47,11 +47,7 @@ int depiler( T_Pile *P, T_Elt *pelt)  //renvoie 0 si pile vide, sinon 1
 
 T_Elt sommet(const  T_Pile *P)
 {
-    if(pilevide(P)){
-        printf("\nPile vide, la valeur renvoyée est 0");
-        return 0;
-    }
-    return P->Elts[P->nbElts];
+    return P->Elts[P->nbElts - 1];
 }
 
 
@@ -66,8 +62,8 @@ void afficherPile(  T_Pile *P)
 {
     if (pilevide(P))
         printf("\nPile vide\n");
-    for (int i = 0; i < P->nbElts; i++)
-        printf("\nP[%d] = %d", i, P->Elts[i]);
+    for (int i = P->nbElts - 1; i >= 0; i--)
+        afficherElt(&(P->Elts[i]));
     printf("\n");
 }
 
