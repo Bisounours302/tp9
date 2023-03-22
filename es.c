@@ -2,7 +2,7 @@
 
 
 
-// lorsque T_ELt est un int  (c'est le case de notre TP)  
+// lorsque aT_ELt est un int  (c'est le case de notre TP)  
 void saisirElt(T_Elt *e)
 {
 scanf("%d",e);
