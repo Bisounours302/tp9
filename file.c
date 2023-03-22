@@ -10,7 +10,6 @@ void initFile(T_File *ptrF) //mettre Tete et Queue à -1
 int  retirer(T_File *ptrF,T_Elt *ptrE) //si pas vide, en tete de file
 {
     if (fileVide(ptrF)){
-        printf("\nPile vide");
         return 0;
     }
     if (ptrF->Queue == ptrF->Tete){
